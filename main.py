@@ -19,10 +19,7 @@ import imagesize
 
 YOLO_DARKNET_SUB_DIR = "YOLO_darknet"
 
-classes = [
-    "matricula",
-    "cara"
-]
+classes = ["landed", "missed"]
 
 
 def get_images_info_and_annotations(opt):
@@ -43,7 +40,7 @@ def get_images_info_and_annotations(opt):
 
     for file_path in file_paths:
         # Check how many items have progressed
-        print("\rProcessing " + str(image_id) + " ...", end='')
+        print("\rProcessing " + str(image_id) + " ...", end="")
 
         # Build image annotation, known the image's width and height
         w, h = imagesize.get(str(file_path))
@@ -58,7 +55,9 @@ def get_images_info_and_annotations(opt):
         else:
             annotations_path = file_path.parent / label_file_name
 
-        if annotations_path.exists(): # The image may not have any applicable annotation txt file.
+        if (
+            annotations_path.exists()
+        ):  # The image may not have any applicable annotation txt file.
             with open(str(annotations_path), "r") as label_file:
                 label_read_line = label_file.readlines()
 
@@ -84,16 +83,10 @@ def get_images_info_and_annotations(opt):
                 width = int(float_width)
                 height = int(float_height)
 
-                if opt.results == True: #yolo_result to Coco_result (saves confidence)
+                if opt.results == True:  # yolo_result to Coco_result (saves confidence)
                     conf = float(label_line.split()[5])
                     annotation = create_annotation_from_yolo_results_format(
-                        min_x,
-                        min_y,
-                        width,
-                        height,
-                        image_id,
-                        category_id,
-                        conf
+                        min_x, min_y, width, height, image_id, category_id, conf
                     )
 
                 else:
@@ -209,10 +202,9 @@ def get_args():
         "that matches replicates the bounding box data.",
     )
     parser.add_argument(
-    "--results",
-    action="store_true",
-    help="Saves confidence scores of the results"
-    "yolo results to Coco results.",
+        "--results",
+        action="store_true",
+        help="Saves confidence scores of the results" "yolo results to Coco results.",
     )
     args = parser.parse_args()
     return args
