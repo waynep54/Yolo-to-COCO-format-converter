@@ -237,11 +237,11 @@ def main(opt):
             dict_list = []
             for l in coco_format["annotations"]:
                 dict_list.append(l[0])
-            with open(output_path, "w") as outfile:
+            with open(output_name, "w") as outfile:
                 str = json.dump(dict_list, outfile, indent=4)
 
         else:
-            with open(output_path, "w") as outfile:
+            with open(output_name, "w") as outfile:
                 json.dump(coco_format, outfile, indent=4)
 
         print("Finished!")
